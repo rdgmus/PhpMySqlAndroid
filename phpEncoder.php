@@ -29,6 +29,13 @@ if (NULL != filter_input(INPUT_GET, 'actionEncode')) {
     }else $data = print_r(gettimeofday(true));
     print hash (  $algo ,  $data , FALSE  );//TRUE, outputs raw binary data. FALSE outputs lowercase hexits.
   }
+}else
+if (NULL != filter_input(INPUT_GET, 'actionLoadHtmlPage')) {
+  if (filter_input(INPUT_GET, 'actionLoadHtmlPage') == 'requestConfirmEmail') {
+    //http://192.168.0.215/PhpMySqlAndroid/phpEncoder.php?actionLoadHtmlPage=requestConfirmEmail
+    print include 'html/requestConfirmEmail.html';
+    return;
+  }
 }
 /**
 *
