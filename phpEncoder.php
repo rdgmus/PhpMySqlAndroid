@@ -28,14 +28,52 @@ if (NULL != filter_input(INPUT_GET, 'actionEncode')) {
       $data = filter_input(INPUT_GET, 'data');
     }else $data = print_r(gettimeofday(true));
     print hash (  $algo ,  $data , FALSE  );//TRUE, outputs raw binary data. FALSE outputs lowercase hexits.
-  }
-}else
-if (NULL != filter_input(INPUT_GET, 'actionLoadHtmlPage')) {
-  if (filter_input(INPUT_GET, 'actionLoadHtmlPage') == 'requestConfirmEmail') {
+  }else
+  if (filter_input(INPUT_GET, 'actionEncode') == 'requestConfirmEmail') {
     //http://192.168.0.215/PhpMySqlAndroid/phpEncoder.php?actionLoadHtmlPage=requestConfirmEmail
-    print include 'html/requestConfirmEmail.html';
-    return;
+
+    //CARICA I PARAMETRI NECESSARI ALLA COMPILAZIONE DEL MODULO
+    //E COMUNI A TUTTE LE ACTION:sendEmail, confirmEmail
+    if (NULL != filter_input(INPUT_GET, 'ip')) {
+      $ip = filter_input(INPUT_GET, 'ip');
+    }else $ip='192.168.0.215';
+
+    if (NULL != filter_input(INPUT_GET, 'cognome')) {
+      $cognome = filter_input(INPUT_GET, 'cognome');
+    }else $cognome='cognome';
+
+    if (NULL != filter_input(INPUT_GET, 'nome')) {
+      $nome = filter_input(INPUT_GET, 'nome');
+    }else $nome='nome';
+
+    if (NULL != filter_input(INPUT_GET, 'email')) {
+      $email = filter_input(INPUT_GET, 'email');
+    }else $email='me@work.it';
+
+    if (NULL != filter_input(INPUT_GET, 'hash')) {
+      $hash = filter_input(INPUT_GET, 'hash');
+    }else $hash='U3kwaGFVZGdObHBJU3lGMFdTWmhiWEE3ZFE9PQ==';
+
+    //BUILD LINK
+    $link = buildLink($ip, $cognome, $nome, $email, $hash);
+    //http://192.168.0.215/PhpMySqlAndroid/userConfirmEmail.php?nome=Roberto&cognome=Della%20Grotta&data=11/02/2014
+    print include 'requestConfirmEmail.php';
+
   }
+}
+
+/**
+* BUILD LINK
+*
+*/
+function buildLink($ip, $cognome, $nome, $email, $hash){
+  $link='http://'.$ip.'/PhpMySqlAndroid/userConfirmEmail.php?'.
+  'cognome='.$cognome.
+  '&nome='.$nome.
+  '&email='.$email.
+  '&hash='.$hash;
+
+  return $link;
 }
 /**
 *
