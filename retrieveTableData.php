@@ -8,8 +8,21 @@ if (NULL != filter_input(INPUT_GET, 'table_name')) {
   if(
   mysql_connect("localhost","root","myzconun")){
     mysql_select_db("scuola");
-    $sql = mysql_query("SELECT * FROM ".$table_name." WHERE 1");
-    while($row=mysql_fetch_assoc($sql))
+
+    if(NULL != filter_input(INPUT_GET, 'sql')){
+      $sql = filter_input(INPUT_GET, 'sql');
+      if($sql == ""){
+        $results = mysql_query("SELECT * FROM ".$table_name." WHERE 1");
+      }
+      else{
+        $results = mysql_query($sql);
+      }
+
+    }else{
+      $results = mysql_query("SELECT * FROM ".$table_name." WHERE 1");
+    }
+
+    while($row=mysql_fetch_assoc($results))
     $output[]=$row;
     print(json_encode($output));// this will print the output in json
     mysql_close();
