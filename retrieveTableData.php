@@ -1,4 +1,13 @@
 <?php
+/**
+* retrievTableData.php raggruppa tutte le funzioni rivolte
+* all'interrogazione del database per caricare i dati di una tabella.
+* 
+*
+* @author rdgmus
+* @filesource
+*/
+
 //URI:
 //http://192.168.0.215/PhpMySqlAndroid/retrieveTableData.php?table_name=utenti_scuola&sql=SELECT * FROM utenti_scuola AS a, ruoli_granted_to_utenti AS b WHERE a.id_utente = b.id_utente
 

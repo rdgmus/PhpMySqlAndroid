@@ -3,6 +3,12 @@
 * FUNZIONI PER LA COMUNICAZIONE MYSQL <=> ANDROID
 *
 */
+include "functions/MySqlFunctionsClass.php";
+
+$mySqlFunctions = new MySqlFunctionsClass();
+
+
+
 if (NULL != filter_input(INPUT_GET, 'actionEncode')) {
   if (filter_input(INPUT_GET, 'actionEncode') == 'encodePassword') {
     //URI:
@@ -16,7 +22,7 @@ if (NULL != filter_input(INPUT_GET, 'actionEncode')) {
     if (NULL != filter_input(INPUT_GET, 'length')){
       $length = filter_input(INPUT_GET, 'length');
     }else $length = 20;
-    $str = generate_password($length);
+    $str = $mySqlFunctions->generate_password($length);
     print $str;
   }else
   if (filter_input(INPUT_GET, 'actionEncode') == 'generateHash') {
@@ -27,7 +33,8 @@ if (NULL != filter_input(INPUT_GET, 'actionEncode')) {
     if (NULL != filter_input(INPUT_GET, 'data')){
       $data = filter_input(INPUT_GET, 'data');
     }else $data = print_r(gettimeofday(true));
-    print hash (  $algo ,  $data , FALSE  );//TRUE, outputs raw binary data. FALSE outputs lowercase hexits.
+    //echo hash(  $algo ,  $data , FALSE  );//TRUE, outputs raw binary data. FALSE outputs lowercase hexits.
+    print $mySqlFunctions->generate_hash($data);
   }else
   if (filter_input(INPUT_GET, 'actionEncode') == 'requestConfirmEmail') {
     //http://192.168.0.215/PhpMySqlAndroid/phpEncoder.php?actionLoadHtmlPage=requestConfirmEmail
@@ -55,39 +62,12 @@ if (NULL != filter_input(INPUT_GET, 'actionEncode')) {
     }else $hash='U3kwaGFVZGdObHBJU3lGMFdTWmhiWEE3ZFE9PQ==';
 
     //BUILD LINK
-    $link = buildLink($ip, $cognome, $nome, $email, $hash);
+    $link = $mySqlFunctions->buildLink($ip, $cognome, $nome, $email, $hash);
     //http://192.168.0.215/PhpMySqlAndroid/userConfirmEmail.php?nome=Roberto&cognome=Della%20Grotta&data=11/02/2014
     print include 'requestConfirmEmail.php';
 
   }
 }
 
-/**
-* BUILD LINK
-*
-*/
-function buildLink($ip, $cognome, $nome, $email, $hash){
-  $link='http://'.$ip.'/PhpMySqlAndroid/userConfirmEmail.php?'.
-  'cognome='.$cognome.
-  '&nome='.$nome.
-  '&email='.$email.
-  '&hash='.$hash;
 
-  return $link;
-}
-/**
-*
-* Generatore di password di lunghezza definita
-* @param unknown_type $length  la lunghezza della password
-*/
-function generate_password($length = 20) {
-  $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' .
-  '0123456789``-=~!@#$%^&*()_+,./<>?;:[]{}\|';
-    $str = '';
-    $max = strlen($chars) - 1;
-    for ($i = 0; $i < $length; $i++)
-    $str .= $chars[mt_rand(0, $max)];
-    return ltrim($str);
-  }
-
-  ?>
+?>
