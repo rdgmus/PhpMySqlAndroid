@@ -1,6 +1,20 @@
 <?php
+/**
+* sendRequestChangePassword raggruppa tutte le funzioni rivolte
+* al servizio di richieste per Nuove Password in caso
+* di smarrimento delle credenziali, basata sull'email fornita
+* che , in caso sia esistente nel sistema, permette l'invio
+* di una email all'utente alla quale egli deve rispondere per confermare
+* sia la veridicità della richiesta, e quindi la sua identità.
+* Dopo la conferma un ADMIN potrà cambiare la password e inviarla
+* all'utente, il quale potrà così riaccedere al REGISTRO SCOLASTICO
+* ma si troverà costretto a cambiare la propria password per sicurezza.
+*
+* @author rdgmus
+* @filesource
+*/
 
-include "functions/mySqlFunctions.php";
+include "functions/MySqlFunctionsClass.php";
 
 $mySqlFunctions = new MySqlFunctionsClass();
 
@@ -27,7 +41,9 @@ if ($mySqlFunctions->alreadyExistsPasswordRequestFor($cognome, $nome, $email)) {
 
 //GENERO UNA CHIAVE UNICA PER L'UTENTE
 $hash = $mySqlFunctions->generate_hash($cognome + $nome + $email);
+
 $esito = $mySqlFunctions->postChangePasswordRequest($cognome, $nome, $email, $hash);
+
 if ($esito) {
   //echo "esito dentro";
   $id_request = $mySqlFunctions->retrieveIdRequest($hash);

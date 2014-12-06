@@ -2,7 +2,7 @@
 /**
 * retrievTableData.php raggruppa tutte le funzioni rivolte
 * all'interrogazione del database per caricare i dati di una tabella.
-* 
+*
 *
 * @author rdgmus
 * @filesource
@@ -35,15 +35,22 @@ mysql_connect("localhost","root","myzconun")){
     }
   }
 
-  while($row=mysql_fetch_assoc($results))
-  $output[]=$row;
-  print(json_encode($output));// this will print the output in json
-  mysql_close();
-}else{
-  print("[{}]");
-  }
+  $num_rows = mysql_num_rows($results);
+  if($num_rows > 0){
+    while($row=mysql_fetch_assoc($results)){
+      $output[]=$row;
+    }
+    print(json_encode($output));// this will print the output in json
+    mysql_close();
+  }else{
+    print("[{}]");
+      mysql_close();
+    }
+  }else{
+    print("[{}]");
+    }
 
 
 
 
-  ?>
+    ?>

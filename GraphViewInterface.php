@@ -8,21 +8,28 @@
 * @author rdgmus
 * @filesource
 */
-//http://192.168.0.215/PhpMySqlAndroid/GraphViewInterface.php
+//http://192.168.0.215/PhpMySqlAndroid/GraphViewInterface.php?graph_type=DAILY
 
 include "functions/MySqlFunctionsClass.php";
 
 $mySqlFunctions = new MySqlFunctionsClass();
 
-$array =  $mySqlFunctions->getDailyConnection();
+if (NULL != filter_input(INPUT_GET, 'graph_type')) {
+  $graph_type = filter_input(INPUT_GET, 'graph_type');
+  if ($graph_type == "DAILY") {//GRAFICO CONNESSIONI PER GIORNO
+    $array =   $mySqlFunctions->getDailyConnectionAsJSON();
+    //    echo "CONNESSIONI GIORNALIERE";
 
-echo "CONNESSIONI GIORNALIERE";
-print_r($array);
+    print($array);
+  }
+  if ($graph_type == "MONTLY") {//GRAFICO CONNESSIONI PER MESE
+    $array =  $mySqlFunctions->getConnectionPerMonth();
+    //    echo "CONNESSIONI MENSILI";
+    print(json_encode($array));
+  }
+}
 
-$array =  $mySqlFunctions->getConnectionPerMonth();
-
-echo "CONNESSIONI MENSILI";
-print_r($array);
+//**********************************************************
 
 
   ?>
