@@ -18,6 +18,7 @@ include "functions/MySqlFunctionsClass.php";
 
 $mySqlFunctions = new MySqlFunctionsClass();
 
+//http://192.168.0.215/PhpMySqlAndroid/sendRequestChangePassword.php?cognome=&nome=&email=
 
 //INOLTRA RICHIESTA INSERENDO UN RECORD NELLA TABELLA change_password_request
 if (NULL != filter_input(INPUT_GET, 'cognome')) {
@@ -53,8 +54,11 @@ if ($esito) {
   "&cognome=" . $cognome .
   "&nome=" . $nome .
   "&email=" . $email;
-  inviaRichiestaConfermaTo($cognome, $nome, $email, $toLink);
-  echo (int) 1;
+  if(inviaRichiestaConfermaTo($cognome, $nome, $email, $toLink)){
+    echo (int) 1;
+  }else{
+    echo (int) 3;
+  }
 } else {
   echo (int) 0;
 }
@@ -78,7 +82,7 @@ function inviaRichiestaConfermaTo($cognome, $nome, $email, $toLink) {
   "In tal caso effettui una connessione al link sottostante " .
   " cliccando su di esso o copiandolo nel suo browser, " .
   " e segua le istruzioni." .
-  "Cordiali Saluti <br> Admin - PhpRegistroScuolaNetBeans <br>" .
+  "Cordiali Saluti <br> Admin - RegistroAndroid <br>" .
   "<a href='" . $toLink . "'>" . $toLink . "</a>";
   //Assigning a picture for {logo} replacement
   $logo = "images/cbasso1.png";
