@@ -16,6 +16,12 @@ if (NULL != filter_input(INPUT_GET, 'actionEncode')) {
     $str = filter_input(INPUT_GET, 'password');
     print base64_encode(base64_encode($str));
   }else
+  if (filter_input(INPUT_GET, 'actionEncode') == 'decodePassword') {
+    //URI:
+    //http://192.168.0.215/PhpMySqlAndroid/phpEncoder.php?actionEncode=decodePassword&password=iw3072ylB
+    $str = filter_input(INPUT_GET, 'password');
+    print base64_decode(base64_decode($str));
+  }else
   if (filter_input(INPUT_GET, 'actionEncode') == 'generatePassword') {
     //URI:
     //http://192.168.0.215/PhpMySqlAndroid/phpEncoder.php?actionEncode=generatePassword&length=8
