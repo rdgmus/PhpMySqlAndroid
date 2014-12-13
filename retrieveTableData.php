@@ -36,6 +36,7 @@ mysql_connect("localhost","root","myzconun")){
   }
 
   $num_rows = mysql_num_rows($results);
+
   if($num_rows > 0){
     while($row=mysql_fetch_assoc($results)){
       $output[]=$row;
